@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "T6AA+E04wu+KOJjpEh2RJcvIdF1xEJTOk+SAjcg4Dgfoo5rZ/q+KSwQ/ZifG/Wv1ChDTMKcJqlSx+J6iW4kXBQ==",
+  "dgSpecHash": "+snZ8T2uFxTgVRgawn+5H5dQ1L3RFIIradXkp25OquHCuM4EvqAYpFEsg/w8y11NuXX9zjXuM3xkoFYwm0eJgg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\eigenaar\\Desktop\\Trivia\\trivia\\Backend\\Backend.csproj",
+  "projectFilePath": "C:\\Users\\eigenaar\\OneDrive\\Bureaublad\\cc\\SQ\\trivia\\backend\\Backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\eigenaar\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.4\\microsoft.aspnetcore.openapi.8.0.4.nupkg.sha512",
     "C:\\Users\\eigenaar\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",

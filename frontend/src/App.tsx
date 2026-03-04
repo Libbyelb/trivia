@@ -1,11 +1,13 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-
+import MainFooter from './Footer';
+import MainHeader from './Header';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
+      <MainHeader />
+      <main className="container mx-auto py-8">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
@@ -18,7 +20,8 @@ function App() {
         >
           Learn React
         </a>
-      </header>
+      </main>
+      <MainFooter />
     </div>
   );
 }

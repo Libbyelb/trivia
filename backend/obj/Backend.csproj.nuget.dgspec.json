@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\eigenaar\\Desktop\\Trivia\\trivia\\Backend\\Backend.csproj": {}
+    "C:\\Users\\eigenaar\\OneDrive\\Bureaublad\\cc\\SQ\\trivia\\backend\\Backend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\eigenaar\\Desktop\\Trivia\\trivia\\Backend\\Backend.csproj": {
+    "C:\\Users\\eigenaar\\OneDrive\\Bureaublad\\cc\\SQ\\trivia\\backend\\Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\eigenaar\\Desktop\\Trivia\\trivia\\Backend\\Backend.csproj",
+        "projectUniqueName": "C:\\Users\\eigenaar\\OneDrive\\Bureaublad\\cc\\SQ\\trivia\\backend\\Backend.csproj",
         "projectName": "Backend",
-        "projectPath": "C:\\Users\\eigenaar\\Desktop\\Trivia\\trivia\\Backend\\Backend.csproj",
+        "projectPath": "C:\\Users\\eigenaar\\OneDrive\\Bureaublad\\cc\\SQ\\trivia\\backend\\Backend.csproj",
         "packagesPath": "C:\\Users\\eigenaar\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\eigenaar\\Desktop\\Trivia\\trivia\\Backend\\obj\\",
+        "outputPath": "C:\\Users\\eigenaar\\OneDrive\\Bureaublad\\cc\\SQ\\trivia\\backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\eigenaar\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\eigenaar\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -34,11 +32,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -73,7 +66,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.124/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
