@@ -29,5 +29,16 @@ app.MapGet("/Questions", () =>
 .WithName("GetQuestions")
 .WithOpenApi();
 
+
+app.MapPost("/Answers", (bool answers) =>
+{
+    Console.WriteLine($"Received answer: {answers}");
+    if (answers)
+    {
+        return Results.Ok("Correct!");
+    }
+    return Results.Created($"/Questions/", answers);
+}).WithName("PostAnswer")
+.WithOpenApi();
 app.Run();
 
