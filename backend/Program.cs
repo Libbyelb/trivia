@@ -5,7 +5,23 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// allows cross-origin requests from the frontend
+//-- CORS configuration --
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("frontend", policy =>
+        policy.WithOrigins("http://localhost:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod());
+});
 var app = builder.Build();
+app.UseHttpsRedirection();
+app.UseCors("frontend");
+//--
+
+
+
+//
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -40,5 +56,19 @@ app.MapPost("/Answers", (bool answers) =>
     return Results.Created($"/Questions/", answers);
 }).WithName("PostAnswer")
 .WithOpenApi();
+
+// app.MapGet("/test", async (IHttpClientFactory factory) =>
+// {
+//     var client = factory.CreateClient();
+//     var response = await client.GetAsync("http://localhost:5210/external-post");
+
+//     if (!response.IsSuccessStatusCode)
+//         return Results.StatusCode((int)response.StatusCode);
+
+//     var json = await response.Content.ReadAsStringAsync();
+//     return Results.Content(json, "application/json");
+// })
+// .WithName("Gettest")
+// .WithOpenApi();
 app.Run();
 

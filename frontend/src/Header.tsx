@@ -1,8 +1,9 @@
 function MainHeader() {
     return (       
-     <header className="bg-gray-800 text-white py-4">
-        <div className="container mx-auto text-center" style={{ backgroundColor: "blue", position: "relative", top: 0, left: 0, right: 0 }}>
-          <h1 className="text-2xl font-bold">Your App</h1>
+     <header className="bg-slate-900 text-white py-6 shadow-lg">
+        <div className="container mx-auto px-4">
+          <h1 className="text-4xl font-bold tracking-tight">Trivia Challenge</h1>
+          <p className="text-slate-300 text-sm mt-1">Test your knowledge</p>
         </div>
     </header>);
 } 
