@@ -1,5 +1,8 @@
-var builder = WebApplication.CreateBuilder(args);
+using System.Net.Http;
 
+
+var builder = WebApplication.CreateBuilder(args);
+var client = new HttpClient();
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -34,13 +37,11 @@ app.UseHttpsRedirection();
 
 app.MapGet("/Questions", () =>
 {
-    var Question = new
-    {
-        Id = 2,
-        Text = $"Question 2",
-        Answer = $"Answer 2"
-    };
-    return Question;
+    var endpoint = new Uri("https://opentdb.com/api.php?amount=3");
+    var result = client.GetAsync(endpoint).Result;
+    var json = result.Content.ReadAsStringAsync().Result;
+    Console.WriteLine("Fetched questions from Open Trivia DB");
+    return json;
 })
 .WithName("GetQuestions")
 .WithOpenApi();
@@ -56,19 +57,5 @@ app.MapPost("/Answers", (bool answers) =>
     return Results.Created($"/Questions/", answers);
 }).WithName("PostAnswer")
 .WithOpenApi();
-
-// app.MapGet("/test", async (IHttpClientFactory factory) =>
-// {
-//     var client = factory.CreateClient();
-//     var response = await client.GetAsync("http://localhost:5210/external-post");
-
-//     if (!response.IsSuccessStatusCode)
-//         return Results.StatusCode((int)response.StatusCode);
-
-//     var json = await response.Content.ReadAsStringAsync();
-//     return Results.Content(json, "application/json");
-// })
-// .WithName("Gettest")
-// .WithOpenApi();
 app.Run();
 
