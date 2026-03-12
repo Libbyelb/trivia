@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import MainFooter from './Footer';
 import MainHeader from './Header';
-import { get } from 'http';
 
 interface Questions {
   id: number;
