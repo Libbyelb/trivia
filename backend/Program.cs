@@ -25,17 +25,17 @@ app.UseCors("frontend");
 //--
  static string Cleaningquestion(TriviaApiResponse response)
 {
-    var Cleangquestion = "cleaned question";
     var Cleangquestions = new List<CleanTriviaQuestion>();
     for (int i = 0; i < response.Results.Count; i++)
     {
-        Console.WriteLine($"Cleaning question: {response.Results[i].Question}");
         Cleangquestions.Add(new CleanTriviaQuestion
         {
             Type = response.Results[i].Type,
             Difficulty = response.Results[i].Difficulty,
             Category = response.Results[i].Category,
-            Question = System.Net.WebUtility.HtmlDecode(response.Results[i].Question)
+            Question = System.Net.WebUtility.HtmlDecode(response.Results[i].Question),
+            Answers = new List<string>(response.Results[i].IncorrectAnswers).Append(response.Results[i].CorrectAnswer).ToList(),
+            CorrectAnswers = new List<string> { hashcode(response.Results[i].CorrectAnswer).ToString() }
         });
     }
     var stringpfquestions = JsonConvert.SerializeObject(Cleangquestions);
@@ -51,13 +51,19 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+static int hashcode(string input)
+{
+            int hashCode = input.GetHashCode();
+            return hashCode;
+}
+
+
 app.MapGet("/Questions", () =>
 {
     var endpoint = new Uri("https://opentdb.com/api.php?amount=3");
     var result = client.GetAsync(endpoint).Result;
     var json = result.Content.ReadAsStringAsync().Result;
-    var json2 = JsonConvert.DeserializeObject<TriviaApiResponse>(json);
-    Console.WriteLine("Fetched questions from Open Trivia DB");
+    var json2 = System.Text.Json.JsonSerializer.Deserialize<TriviaApiResponse>(json);
     return Cleaningquestion(json2);
 })
 .WithName("GetQuestions")

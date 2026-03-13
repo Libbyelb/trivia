@@ -29,7 +29,8 @@ public sealed class TriviaQuestion
 
     [JsonPropertyName("incorrect_answers")]
     public List<string> IncorrectAnswers { get; set; } = new();
-}public sealed class CleanTriviaQuestion{
+}
+public sealed class CleanTriviaQuestion{
     [JsonPropertyName("type")]
     public string Type { get; set; } = string.Empty;
 
@@ -41,4 +42,11 @@ public sealed class TriviaQuestion
 
     [JsonPropertyName("question")]
     public string Question { get; set; } = string.Empty;
-    }
+    
+    [JsonPropertyName("answers")]
+    public List<string> Answers { get; set; } = new();
+
+        [JsonPropertyName("correctanswers")]
+    public List<string> CorrectAnswers { get; set; } = new();
+}           
+
