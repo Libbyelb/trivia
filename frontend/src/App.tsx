@@ -13,14 +13,6 @@ interface Questions {
   CorrectAnswers: string[];
 }
 
-interface Answer {
-  id: number;
-  answer: string;
-}
-
-function sendAnswers(answers: Answer[]) {
-  console.log('Sending answers:', answers);
-}
 
 function App() {
   const [data, setData] = useState<Questions[] | null>(null);
