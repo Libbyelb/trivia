@@ -23,7 +23,7 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseCors("frontend");
 //--
- static string Cleaningquestion(TriviaApiResponse response)
+static string Cleaningquestion(TriviaApiResponse response)
 {
     var Cleangquestions = new List<CleanTriviaQuestion>();
     for (int i = 0; i < response.Results.Count; i++)
@@ -41,6 +41,11 @@ app.UseCors("frontend");
     var stringpfquestions = JsonConvert.SerializeObject(Cleangquestions);
     return stringpfquestions;
 }   
+static int hashcode(string input)
+{
+            int hashCode = input.GetHashCode();
+            return hashCode;
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -50,13 +55,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-static int hashcode(string input)
-{
-            int hashCode = input.GetHashCode();
-            return hashCode;
-}
-
 
 app.MapGet("/Questions", () =>
 {
@@ -70,14 +68,16 @@ app.MapGet("/Questions", () =>
 .WithOpenApi();
 
 
-app.MapPost("/Answers", (bool answers) =>
+app.MapPost("/Answers", (AnswerSubmission submission) =>
 {
-    Console.WriteLine($"Received answer: {answers}");
-    if (answers)
+    for (int i = 0; i < submission.Questions.Length; i++)
     {
-        return Results.Ok("Correct!");
+        Console.WriteLine($"Question: {submission.Questions[i]}");
+        Console.WriteLine($"Answer: {submission.Answers[i]}");
+        Console.WriteLine($"Correct answer: {submission.CorrectAnswers[i]}");
     }
-    return Results.Created($"/Questions/", answers);
+
+    return Results.Ok("Answers received");
 }).WithName("PostAnswer")
 .WithOpenApi();
 app.Run();

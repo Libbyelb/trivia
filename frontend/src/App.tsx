@@ -45,11 +45,16 @@ function App() {
     }));
   };
 
-  const sendAnswers = () => {
-    const correctAnswers = Object.fromEntries(
-      (data ?? []).map((q, i) => [i, q.CorrectAnswers[0]])
-    );
-    console.log('Selected input:', selectedAnswers, correctAnswers);
+  const sendAnswers = async () => {
+    const questions = (data ?? []).map((q) => q.Question);
+    const selectedAnswersArray = questions.map((_, i) => selectedAnswers[i] ?? '');
+    const correctAnswers = (data ?? []).map((q) => q.CorrectAnswers[0]);
+
+    await fetch('http://localhost:5210/Answers', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ questions, answers: selectedAnswersArray, correctAnswers }),
+    });
   };
 
   return (

@@ -48,5 +48,17 @@ public sealed class CleanTriviaQuestion{
 
         [JsonPropertyName("correctanswers")]
     public List<string> CorrectAnswers { get; set; } = new();
-}           
+}
+
+public sealed class AnswerSubmission
+{
+    [JsonPropertyName("questions")]
+    public string[] Questions { get; set; } = [];
+
+    [JsonPropertyName("answers")]
+    public string[] Answers { get; set; } = [];
+
+    [JsonPropertyName("correctAnswers")]
+    public string[] CorrectAnswers { get; set; } = [];
+}
 
