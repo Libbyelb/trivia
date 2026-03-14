@@ -48,7 +48,7 @@ static string Cleaningquestion(TriviaApiResponse response)
             Category = response.Results[i].Category,
             Question = System.Net.WebUtility.HtmlDecode(response.Results[i].Question),
             Answers = Shuffle(new List<string>(response.Results[i].IncorrectAnswers).Append(response.Results[i].CorrectAnswer).ToList()),
-            CorrectAnswers = new List<string> { hashcode(response.Results[i].CorrectAnswer).ToString()  }
+            CorrectAnswers = new List<string> { hashcode(response.Results[i].CorrectAnswer + response.Results[i].Question).ToString()  }
         });
     }
     var stringpfquestions = JsonConvert.SerializeObject(Cleangquestions);
@@ -88,7 +88,7 @@ app.MapPost("/Answers", (AnswerSubmission submission) =>
     {
         Console.WriteLine($"code: {hashcode(submission.Questions[i])}");
         Console.WriteLine($"Answer: {submission.Answers[i]}");
-        if (hashcode(submission.Answers[i]).ToString() == submission.CorrectAnswers[i])
+        if (hashcode(submission.Answers[i] + submission.Questions[i]).ToString() == submission.CorrectAnswers[i])
         {
             Console.WriteLine("Correct answer!");
             bools[i] = true;
