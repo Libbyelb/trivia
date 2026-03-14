@@ -18,7 +18,7 @@ function App() {
   const [data, setData] = useState<Questions[] | null>(null);
   const hasFetchedRef = useRef(false);
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
-
+  const [score, setScore] = useState<boolean[] | null>(null);
   useEffect(() => {
     if (hasFetchedRef.current) return; // guard: prevent 2nd StrictMode call
     hasFetchedRef.current = true;
@@ -50,11 +50,14 @@ function App() {
     const selectedAnswersArray = questions.map((_, i) => selectedAnswers[i] ?? '');
     const correctAnswers = (data ?? []).map((q) => q.CorrectAnswers[0]);
 
-    await fetch('http://localhost:5210/Answers', {
+    const response = await fetch('http://localhost:5210/Answers', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ questions, answers: selectedAnswersArray, correctAnswers }),
     });
+    const result = (await response.json()) as boolean[];
+    setScore(result)
+    console.log('Response:', result);
   };
 
   return (
@@ -86,9 +89,16 @@ function App() {
                     ]}
                     styles={dropdownStyles}
                   />
+                  
                 )}
+                             {
+                    score === null ? null :
+                    score[index] === true ? <p className="text-green-500">Correct answer!</p> : 
+                    score[index] === false ? <p className="text-red-500">Incorrect answer.</p> : 
+                    null}
               </div>
             ))}
+            
           </div>
         </div>
         <button onClick={sendAnswers}>Send Answers</button>
