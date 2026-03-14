@@ -23,6 +23,19 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseCors("frontend");
 //--
+  static List<T> Shuffle<T>(List<T> list) {
+    Random random = new Random();
+    int n = list.Count;
+
+    // Start from the end and swap elements with a random one
+    for (int i = n - 1; i > 0; i--) {
+      int j = random.Next(0, i + 1);
+      T temp = list[i];
+      list[i] = list[j];
+      list[j] = temp;
+    }
+    return list;
+  }
 static string Cleaningquestion(TriviaApiResponse response)
 {
     var Cleangquestions = new List<CleanTriviaQuestion>();
@@ -34,8 +47,8 @@ static string Cleaningquestion(TriviaApiResponse response)
             Difficulty = response.Results[i].Difficulty,
             Category = response.Results[i].Category,
             Question = System.Net.WebUtility.HtmlDecode(response.Results[i].Question),
-            Answers = new List<string>(response.Results[i].IncorrectAnswers).Append(response.Results[i].CorrectAnswer).ToList(),
-            CorrectAnswers = new List<string> { hashcode(response.Results[i].CorrectAnswer).ToString() }
+            Answers = Shuffle(new List<string>(response.Results[i].IncorrectAnswers).Append(response.Results[i].CorrectAnswer).ToList()),
+            CorrectAnswers = new List<string> { hashcode(response.Results[i].CorrectAnswer).ToString()  }
         });
     }
     var stringpfquestions = JsonConvert.SerializeObject(Cleangquestions);
@@ -70,14 +83,24 @@ app.MapGet("/Questions", () =>
 
 app.MapPost("/Answers", (AnswerSubmission submission) =>
 {
+    bool[] bools = new bool[submission.Questions.Length];
     for (int i = 0; i < submission.Questions.Length; i++)
     {
-        Console.WriteLine($"Question: {submission.Questions[i]}");
+        Console.WriteLine($"code: {hashcode(submission.Questions[i])}");
         Console.WriteLine($"Answer: {submission.Answers[i]}");
-        Console.WriteLine($"Correct answer: {submission.CorrectAnswers[i]}");
-    }
+        if (hashcode(submission.Answers[i]).ToString() == submission.CorrectAnswers[i])
+        {
+            Console.WriteLine("Correct answer!");
+            bools[i] = true;
+        }
+        else
+        {
+            Console.WriteLine("Incorrect answer.");
+            bools[i] = false;
+        }
+  }
 
-    return Results.Ok("Answers received");
+    return Results.Ok(bools);
 }).WithName("PostAnswer")
 .WithOpenApi();
 app.Run();
