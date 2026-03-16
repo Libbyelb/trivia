@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import MainFooter from './Footer';
 import MainHeader from './Header';
-import { Dropdown, IDropdownStyles, IDropdownOption } from '@fluentui/react';
+import { Dropdown, IDropdownStyles, IDropdownOption, ColorClassNames } from '@fluentui/react';
 
 interface Questions {
   Type: string;
@@ -70,7 +70,7 @@ function App() {
               <div key={index}>
                 {question.Type === "multiple" ? (
                   <div>
-                    <Dropdown
+                    <Dropdown  style ={{ marginLeft: '150px' }}
                       placeholder="Select your answer"
                       label={question.Question}
                       onChange={(_, option) => handleAnswerChange(index, option)}
@@ -79,7 +79,7 @@ function App() {
                     />
                   </div>
                 ) : (
-                  <Dropdown
+                  <Dropdown  style ={{ marginLeft: '150px' }}
                     placeholder="Select your answer"
                     label={question.Question}
                     onChange={(_, option) => handleAnswerChange(index, option)}
@@ -93,8 +93,8 @@ function App() {
                 )}
                              {
                     score === null ? null :
-                    score[index] === true ? <p className="text-green-500">Correct answer!</p> : 
-                    score[index] === false ? <p className="text-red-500">Incorrect answer.</p> : 
+                    score[index] === true ? <p className="text-green-500" style={{ color: 'green' }}>Correct answer!</p> : 
+                    score[index] === false ? <p className="text-red-500" style={{ color: 'red' }}>Incorrect answer.</p> : 
                     null}
               </div>
             ))}
