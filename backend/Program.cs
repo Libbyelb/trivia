@@ -1,5 +1,4 @@
-using System.Net.Http;
-using System.Text.Json;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Backend.Models;
 
@@ -23,7 +22,8 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseCors("frontend");
 //--
-  static List<T> Shuffle<T>(List<T> list) {
+
+static List<T> Shuffle<T>(List<T> list) {
     Random random = new Random();
     int n = list.Count;
 
@@ -36,28 +36,37 @@ app.UseCors("frontend");
     }
     return list;
   }
-static string Cleaningquestion(TriviaApiResponse response)
+static string CleanQuestions(TriviaApiResponse response)
 {
-    var Cleangquestions = new List<CleanTriviaQuestion>();
+    var cleanQuestions = new List<CleanTriviaQuestion>();
     for (int i = 0; i < response.Results.Count; i++)
     {
-        Cleangquestions.Add(new CleanTriviaQuestion
+        cleanQuestions.Add(new CleanTriviaQuestion
         {
             Type = response.Results[i].Type,
             Difficulty = response.Results[i].Difficulty,
             Category = response.Results[i].Category,
             Question = System.Net.WebUtility.HtmlDecode(response.Results[i].Question),
             Answers = Shuffle(new List<string>(response.Results[i].IncorrectAnswers).Append(response.Results[i].CorrectAnswer).ToList()),
-            CorrectAnswers = new List<string> { hashcode(response.Results[i].CorrectAnswer + response.Results[i].Question).ToString()  }
+            CorrectAnswers = new List<string>
+            {
+                ComputeHashCode($"{NormalizeForHash(response.Results[i].CorrectAnswer)}|{NormalizeForHash(response.Results[i].Question)}").ToString()
+            }
         });
     }
-    var stringpfquestions = JsonConvert.SerializeObject(Cleangquestions);
-    return stringpfquestions;
+    var questionsJson = JsonConvert.SerializeObject(cleanQuestions);
+    return questionsJson;
 }   
-static int hashcode(string input)
+static int ComputeHashCode(string input)
 {
             int hashCode = input.GetHashCode();
             return hashCode;
+}
+static string NormalizeForHash(string input)
+{
+    var decoded = System.Net.WebUtility.HtmlDecode(input ?? string.Empty);
+    var collapsedWhitespace = Regex.Replace(decoded.Trim(), @"\s+", " ");
+    return collapsedWhitespace.ToUpperInvariant();
 }
 
 // Configure the HTTP request pipeline.
@@ -74,8 +83,8 @@ app.MapGet("/Questions", () =>
     var endpoint = new Uri("https://opentdb.com/api.php?amount=3");
     var result = client.GetAsync(endpoint).Result;
     var json = result.Content.ReadAsStringAsync().Result;
-    var json2 = System.Text.Json.JsonSerializer.Deserialize<TriviaApiResponse>(json);
-    return Cleaningquestion(json2);
+    var triviaResponse = System.Text.Json.JsonSerializer.Deserialize<TriviaApiResponse>(json);
+    return CleanQuestions(triviaResponse);
 })
 .WithName("GetQuestions")
 .WithOpenApi();
@@ -83,24 +92,23 @@ app.MapGet("/Questions", () =>
 
 app.MapPost("/Answers", (AnswerSubmission submission) =>
 {
-    bool[] bools = new bool[submission.Questions.Length];
+
+
+    bool[] answerResults = new bool[submission.Questions.Length];
     for (int i = 0; i < submission.Questions.Length; i++)
     {
-        Console.WriteLine($"code: {hashcode(submission.Questions[i])}");
-        Console.WriteLine($"Answer: {submission.Answers[i]}");
-        if (hashcode(submission.Answers[i] + submission.Questions[i]).ToString() == submission.CorrectAnswers[i])
+        var submittedCode = ComputeHashCode($"{NormalizeForHash(submission.Answers[i])}|{NormalizeForHash(submission.Questions[i])}").ToString();
+        if (submittedCode == submission.CorrectAnswers[i])
         {
-            Console.WriteLine("Correct answer!");
-            bools[i] = true;
+            answerResults[i] = true;
         }
         else
         {
-            Console.WriteLine("Incorrect answer.");
-            bools[i] = false;
+            answerResults[i] = false;
         }
   }
 
-    return Results.Ok(bools);
+    return Results.Ok(answerResults);
 }).WithName("PostAnswer")
 .WithOpenApi();
 app.Run();
