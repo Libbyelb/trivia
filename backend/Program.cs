@@ -50,7 +50,7 @@ static string CleanQuestions(TriviaApiResponse response)
             Answers = Shuffle(new List<string>(response.Results[i].IncorrectAnswers).Append(response.Results[i].CorrectAnswer).ToList()),
             CorrectAnswers = new List<string>
             {
-                ComputeHashCode($"{NormalizeForHash(response.Results[i].CorrectAnswer)}|{NormalizeForHash(response.Results[i].Question)}").ToString()
+                ComputeHashCode($"{NormalizeForHash(response.Results[i].CorrectAnswer)}|{NormalizeForHash(response.Results[i].Question)} Just some extra text").ToString()
             }
         });
     }
@@ -97,7 +97,7 @@ app.MapPost("/checkanswers", (AnswerSubmission submission) =>
     bool[] answerResults = new bool[submission.Questions.Length];
     for (int i = 0; i < submission.Questions.Length; i++)
     {
-        var submittedCode = ComputeHashCode($"{NormalizeForHash(submission.Answers[i])}|{NormalizeForHash(submission.Questions[i])}").ToString();
+        var submittedCode = ComputeHashCode($"{NormalizeForHash(submission.Answers[i])}|{NormalizeForHash(submission.Questions[i])} Just some extra text").ToString();
         if (submittedCode == submission.CorrectAnswers[i])
         {
             answerResults[i] = true;

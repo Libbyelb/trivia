@@ -27,7 +27,7 @@ function App() {
       .then((response) => response.json())
       .then((json: Questions[]) => {
         setData(json);
-        console.log('json data:', json);
+        // console.log('json data:', json);
       })
       .catch((error) => console.error(error));
   }, []);
