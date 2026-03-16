@@ -23,7 +23,7 @@ function App() {
     if (hasFetchedRef.current) return; // guard: prevent 2nd StrictMode call
     hasFetchedRef.current = true;
 
-    fetch('http://localhost:5210/Questions')
+    fetch('http://localhost:5210/GetQuestions')
       .then((response) => response.json())
       .then((json: Questions[]) => {
         setData(json);
@@ -50,7 +50,7 @@ function App() {
     const selectedAnswersArray = questions.map((_, i) => selectedAnswers[i] ?? '');
     const correctAnswers = (data ?? []).map((q) => q.CorrectAnswers[0]);
 
-    const response = await fetch('http://localhost:5210/Answers', {
+    const response = await fetch('http://localhost:5210/checkanswers', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ questions, answers: selectedAnswersArray, correctAnswers }),

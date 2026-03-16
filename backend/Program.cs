@@ -78,7 +78,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/Questions", () =>
+app.MapGet("/GetQuestions", () =>
 {
     var endpoint = new Uri("https://opentdb.com/api.php?amount=3");
     var result = client.GetAsync(endpoint).Result;
@@ -90,7 +90,7 @@ app.MapGet("/Questions", () =>
 .WithOpenApi();
 
 
-app.MapPost("/Answers", (AnswerSubmission submission) =>
+app.MapPost("/checkanswers", (AnswerSubmission submission) =>
 {
 
 
